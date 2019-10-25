@@ -41,9 +41,85 @@
   <h1>Garden Journal</h1>
   <hr>
 </div>
+<div id="app">
+<div class="row">
+  <div class="col-sm-8">
 
-<div id="instafeed"></div>
+    <div v-if="loading">
+      <p>Loading...</p>
+    </div>
+    <div v-else>
+      <hr>
+      <h2>Click any image below to go to our Instagram post!  This is where we keep a record of what's happening at the farm.</h2>
+      <hr>
+      <p>
+        <button v-on:click="mostLiked">Most Liked</button>
+        <button v-on:click="onTheFarm">On The Farm</button>
+        <button v-on:click="withComments">With Commments</button>
+        <button v-on:click="multipleImages">Mulptiple Pictures</button>
+      </p>
+     
+      <div clss="container" v-if="instagrams.length > 0"> 
+      
+        <div v-for="(insta, index) in filteredInstas" v-if="index%3===0" class="row">
+    
+            <div class="col-sm-4">
+              <figure>
+                <div class="insta">{{postDate(insta.caption.created_time*1000)}}</div>
+                <a :href="insta.link">
+                  <img :src="insta.images.low_resolution.url" :alt="insta.text"/>
+                </a>
+                <figcaption class="insta">{{insta.caption.text.substr(0, 40) + "..."}}</figcaption>
+              </figure>
+            </div>
+            <div class="col-sm-4">
+             
+              <figure v-if="filteredInstas.length-1 > index+1">
+                <div class="insta">{{postDate(instagrams[index+1].caption.created_time*1000)}}</div>
+                <a :href="filteredInstas[index+1].link">
+                  <img :src="filteredInstas[index+1].images.low_resolution.url" :alt="filteredInstas[index+1].text"/>
+                </a>
+                <figcaption class="insta">{{filteredInstas[index+1].caption.text.substr(0, 40) + "..."}}</figcaption>
+              </figure>
+            </div>
+            <div class="col-sm-4">
+             
+              <figure v-if="filteredInstas.length-1 > index+2">
+                <div class="insta">{{postDate(instagrams[index+2].caption.created_time*1000)}}</div>
+                <a :href="filteredInstas[index+2].link">
+                  <img :src="filteredInstas[index+2].images.low_resolution.url" :alt="filteredInstas[index+2].text"/>
+                </a>
+                <figcaption class="insta">{{filteredInstas[index+2].caption.text.substr(0, 40) + "..."}}</figcaption>
+              </figure>
+            </div>
+          </div>
+        
+       </div>
+      <div v-else class="loading"></div>
+     
+    </div>
+</div>
 
+
+<div class="col-sm-3 offset-sm-1 blog-sidebar">
+  <div class="sidebar-module sidebar-module-inset">
+    <h3>Today's Farm Weather</h3>
+    <ul>{{postDateMin(this.weather[0].lastData.dateutc)}}</ul>
+    <hr>
+    <ul>Temperature: {{this.weather[0].lastData.tempf}} &#176;F</ul>
+    <ul>Wind: {{this.weather[0].lastData.windspeedmph}} mph</ul>
+     <ul>Wind Gust: {{this.weather[0].lastData.windgustmph}} mph</ul>
+    <ul>Today's Rainfall: {{this.weather[0].lastData.dailyrainin}} inches</ul>
+    <ul>Humidity: {{this.weather[0].lastData.humidity}} %</ul>
+ 
+  </div>
+  <hr>
+  <div class="sidebar-module sidebar-module-inset">
+     <h3>Farm Weather Totals</h3>
+  </div>
+</div>
+</div>
+</div>
  <div class="parallaxmid">
 
   </div>  
@@ -61,7 +137,7 @@
       <a href="https://www.instagram.com/foothillfarmflowers/" ></a><img class="icon"  src="../images/instagram-icon.png" class="img-fluid mb-4" alt="instagram" ></a>
     </div>
     <div class="col">
-        <a href="https://github.com/molliepayne/CreativeProject2" ><img class="icon" src="../images/git hub icon.png" class="img-fluid mb-4" alt="github" ></a>
+        <a href="https://github.com/molliepayne/CreativeProject3" ><img class="icon" src="../images/git hub icon.png" class="img-fluid mb-4" alt="github" ></a>
     </div>
      <div class="col">
         <a href="https://www.facebook.com/foothillfarmflowers/"><img class="icon" src="../images/facebook icon.png" class="img-fluid mb-4" alt="facebook" ></a>
@@ -102,6 +178,10 @@
   All Rights Reserved, Mollie Payne<br>
   
   </footer>
+   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.2/dist/vue.js"></script>
+   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <script src="https://unpkg.com/vue-star-rating/dist/star-rating.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
