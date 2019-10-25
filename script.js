@@ -20,8 +20,9 @@ let app = new Vue({
     
   },
   created() {
+     this.ambiantWeather();
    this.instagram();
-   this.ambiantWeather();
+  
   },
   computed: {
   
@@ -78,7 +79,7 @@ let app = new Vue({
     postDateMin: function(date) {
       
          
-          return moment(date).format('MMMM Do YYYY h:mm');
+          return moment(date).format('MMMM Do YYYY h:mm A');
     },
     instagram() {
       console.log("in instagram");
@@ -100,11 +101,12 @@ let app = new Vue({
      
       axios.get('https://api.ambientweather.net/v1/devices?apiKey=' + this.apiKey + '&applicationKey=' + this.aplicationKey )
         .then(response => {
+          console.log("loading weather");
           this.loadingWeather = true;
           this.weather = response.data;
           console.log(this.weather);
           this.loadingWeather = false;
-         
+          console.log("done in abient weather");
           return true;
 
         })
@@ -129,6 +131,10 @@ let app = new Vue({
     multipleImages(){
       console.log("multipleImages");
       this.show='multipleImages';
+    },
+    viewAll(){
+      console.log("viewAll");
+      this.show='all';
     }
     
     
